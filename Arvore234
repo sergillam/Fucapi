@@ -1,0 +1,441 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+ 
+class noTree234
+{
+    int *chaves; //vetor de chaves
+    int t; //grau
+    noTree234 **C;// um array de ponteiro
+    int n;  // Numero de chaves 
+    bool noFolha; //É verdadeiro quando nó é folha , senão é falso.
+ 
+public:
+    noTree234(int _t, bool _noFolha);  // construtor   
+  
+    noTree234 *search(int k);  // função de pesquisa
+ 
+    void insertNonFull(int k); // Pesquisa e inseri o elemento (pesquisa até achar o nofolha e poder inserir ele)
+ 
+    void split(int i, noTree234 *y);// Função utilizada quando o vetor de chaves estiver cheio , função dividir o NO em parametro)
+ 
+    void remove(int k);//
+ 
+    void removeFromnoFolha(int id);// Remove Quando é no Folha
+ 
+    void removeFromNonnoFolha(int id);// Remove Quando não é noFolha
+ 
+    int getPred(int id);
+ 
+    int getSucc(int id);
+ 
+    void fill(int id);//
+ 
+    void borrowFromPrev(int id);
+ 
+    void borrowFromNext(int id);
+ 
+    void merge(int id);//
+
+    friend class tree234;
+};
+ 
+ void noTree234::insertNonFull(int k)
+{
+    int i = n-1;//Recebe a quantidade atual de chaves
+ 
+    if (noFolha == true)// Verifica se o no é noRaiz
+	{
+		// encontra a posição de NUM e move o restante maior.
+        while (i >= 0 && chaves[i] > k)
+        {
+            chaves[i+1] = chaves[i];
+            i--;
+        } 
+		//Depois de procura a sua posição NUM e inserido e o numero de chaves é incrementado	
+        chaves[i+1] = k;
+        n = n+1;
+    }
+    else 
+    {// encontra a posição de NUM
+        while (i >= 0 && chaves[i] > k)
+		{
+            i--;
+		}
+		
+        if (C[i+1]->n == 2*t-1) // Verifica se tem que fazer  a divisão de no
+        {
+            split(i+1, C[i+1]);
+ 
+		// Após separação, a chave meio de C [i] vai para cima e
+            // C [i] está dividida . Veja qual dos dois Vai ter a nova chave
+            if (chaves[i+1] < k)
+			{
+                i++;
+			}
+        }
+        C[i+1]->insertNonFull(k);
+    }
+}
+ 
+void noTree234::split(int i, noTree234 *no)
+{	
+	//cria um novo NO com t-1 chaves
+    noTree234 *aux = new noTree234(no->t, no->noFolha);
+    aux->n = t - 1;
+ 
+ 	//copia as ultimas posições de no para novoNO
+    for (int j = 0; j < t-1; j++)
+	{
+        aux->chaves[j] = no->chaves[j+t];
+    }
+	if (no->noFolha == false)//copia os galhos de no para novoNO se ele não for noFolha
+    {
+        for (int j = 0; j < t; j++)
+            aux->C[j] = no->C[j+t];
+    }
+		//reduz o numero de chaves de NO
+    no->n = t - 1;
+    for (int j = n; j >= i+1; j--)// cria um espaço para o novoNO
+	{
+        C[j+1] = C[j];
+	}
+    C[i+1] = aux;//Liga o novoNO
+ 
+    for (int j = n-1; j >= i; j--)//Para inserir a nova chave move todas as outras chaves pra frente
+	{
+        chaves[j+1] = chaves[j];
+	}
+    chaves[i] = no->chaves[t-1];//liga a nova chave
+	
+    n = n + 1;//Incrementa o numero de chaves do NO
+}
+  
+noTree234 *noTree234::search(int k)
+{
+  
+    int i = 0;
+    while (i < n && k > chaves[i])
+        i++;
+ 
+    if (chaves[i] == k)
+        return this;
+ 
+    if (noFolha == true)
+        return NULL;
+ 
+    return C[i]->search(k);
+}
+ 
+noTree234::noTree234(int t1, bool noFolha1)
+{
+    t = t1;
+    noFolha = noFolha1;
+    chaves = new int[2*t-1];
+    C = new noTree234 *[2*t];
+ 
+    n = 0;
+}
+ 
+ 
+void noTree234::remove(int k)
+{
+    int id = 0;
+      while (id<n && chaves[id] < k){
+        ++id;
+      }
+    if (id < n && chaves[id] == k)
+    {
+ 
+ 
+        if (noFolha)
+            removeFromnoFolha(id);
+        else
+            removeFromNonnoFolha(id);
+    }
+    else
+    {
+ 
+        if (noFolha)
+        {
+            cout << "O numero  "<< k <<" Nao existe na arvore :(\n";
+            return;
+        }
+ 
+  
+
+        if (C[id]->n < t)
+            fill(id);
+ 
+    
+        if ( (id==n) && id > n)
+            C[id-1]->remove(k);
+        else
+            C[id]->remove(k);
+    }
+}
+ 
+void noTree234::removeFromnoFolha (int id)
+{
+ 
+    for (int i=id+1; i<n; ++i){// move todas as chaves para ajustar 
+        chaves[i-1] = chaves[i];
+	}
+    n--;	//reduz o numero de chaves;
+ 
+ 
+}
+ 
+void noTree234::removeFromNonnoFolha(int id)
+{
+ 
+    int k = chaves[id];
+
+    if (C[id]->n >= t)
+    {
+        int pred = getPred(id);
+        chaves[id] = pred;
+        C[id]->remove(pred);
+    }
+    else if  (C[id+1]->n >= t)
+    {
+        int succ = getSucc(id);
+        chaves[id] = succ;
+        C[id+1]->remove(succ);
+    }
+    else
+    {
+        merge(id);
+        C[id]->remove(k);
+    }
+}
+ 
+int noTree234::getPred(int id)
+{
+    noTree234 *cur=C[id];
+    while (!cur->noFolha)
+        cur = cur->C[cur->n];
+ 
+    return cur->chaves[cur->n-1];
+}
+ 
+int noTree234::getSucc(int id)
+{
+    noTree234 *cur = C[id+1];
+    while (!cur->noFolha)
+        cur = cur->C[0];
+ 
+    return cur->chaves[0];
+}
+ 
+void noTree234::fill(int id) // a função preenche o galho q tem menos de T-1
+{
+
+    if (id!=0 && C[id-1]->n>=t)
+	{// se a chave anterior tem mais chave que t , empresta
+        borrowFromPrev(id);
+	}
+
+    else if (id!=n && C[id+1]->n>=t) // se a proxima chave tem mais chave que t , empresta
+	{
+        borrowFromNext(id);
+	}
+    else// realizar a junção com a outra chave.
+    {
+        if (id != n)
+		{
+            merge(id);
+        }
+		else
+		{
+            merge(id-1);
+		}
+	}
+}
+ 
+void noTree234::borrowFromPrev(int id)
+{
+ 
+    noTree234 *child=C[id];
+    noTree234 *sibling=C[id-1];
+
+    for (int i=child->n-1; i>=0; --i)
+        child->chaves[i+1] = child->chaves[i];
+ 
+    if (!child->noFolha)
+    {
+        for(int i=child->n; i>=0; --i)
+            child->C[i+1] = child->C[i];
+    }
+ 
+    child->chaves[0] = chaves[id-1];
+ 
+    if (!noFolha)
+        child->C[0] = sibling->C[sibling->n];
+ 
+    chaves[id-1] = sibling->chaves[sibling->n-1];
+ 
+    child->n += 1;
+    sibling->n -= 1;
+
+}
+ 
+
+void noTree234::borrowFromNext(int id)
+{
+ 
+    noTree234 *child=C[id];
+    noTree234 *sibling=C[id+1];
+ 
+    child->chaves[(child->n)] = chaves[id];
+ 
+ 
+    if (!(child->noFolha))
+        child->C[(child->n)+1] = sibling->C[0];
+ 
+    chaves[id] = sibling->chaves[0];
+ 
+    for (int i=1; i<sibling->n; ++i)
+        sibling->chaves[i-1] = sibling->chaves[i];
+ 
+    if (!sibling->noFolha)
+    {
+        for(int i=1; i<=sibling->n; ++i)
+            sibling->C[i-1] = sibling->C[i];
+    }
+
+    child->n += 1;
+    sibling->n -= 1;
+ 
+}
+
+void noTree234::merge(int id)
+{
+    noTree234 *child = C[id];
+    noTree234 *sibling = C[id+1];
+ 
+
+    child->chaves[t-1] = chaves[id];
+ 
+    for (int i=0; i<sibling->n; ++i)
+        child->chaves[i+t] = sibling->chaves[i];
+ 
+    if (!child->noFolha)
+    {
+        for(int i=0; i<=sibling->n; ++i)
+            child->C[i+t] = sibling->C[i];
+    }
+ 
+    for (int i=id+1; i<n; ++i)
+        chaves[i-1] = chaves[i];
+ 
+
+    for (int i=id+2; i<=n; ++i)
+        C[i-1] = C[i];
+ 
+    child->n += sibling->n+1;
+    n--;
+ 
+    delete(sibling);
+}
+ 
+class tree234
+{
+    noTree234 *raiz; 
+    int t;  
+public:
+ 
+    tree234()
+    {
+        raiz= NULL;
+        t = 3;
+    }
+  
+    noTree234* search(int k) // Função de pesquisa do elemento.
+    {
+        return (raiz== NULL)? NULL : raiz->search(k);
+    }
+ 
+    void insert(int k); // Função que é chamada no main para inserir elemento.
+ 
+    void remove(int k); // Função que é chamada no main para remover elemento
+ 
+};
+ 
+void tree234::insert(int k)
+{
+    if (raiz== NULL)  // insere se a raiz for nula 
+    {
+        raiz= new noTree234(t, true);
+        raiz->chaves[0] = k; 
+        raiz->n = 1; 
+    }
+    else 
+    {
+        if (raiz->n == 2*t-1) // Verifica o limite de filhos por nó pra poder fazer a inserção.
+        {
+            noTree234 *aux = new noTree234(t, false);
+ 
+            aux->C[0] = raiz;
+ 
+            aux->split(0, raiz);
+ 
+            int i = 0;
+            if (aux->chaves[0] < k){
+                i++;
+			}
+            aux->C[i]->insertNonFull(k);
+
+            raiz= aux;
+        }
+        else  
+            raiz->insertNonFull(k);
+    }
+}
+ 
+void tree234::remove(int k)
+{
+    if (!raiz)
+    {
+        cout <<"Error! , Arvore Vazia\n";
+        return;
+    }
+    raiz->remove(k);
+ 
+    if (raiz->n==0)
+    {
+        noTree234 *aux = raiz;
+        if (raiz->noFolha)
+		{
+            raiz= NULL;
+        }
+		else
+        {
+			raiz= raiz->C[0];
+		}
+        delete aux;
+    }
+}
+ 
+
+int main()
+{
+    tree234 t; 
+    
+    
+    t.insert(3);
+    
+    if (t.search(3) == NULL ){
+        cout << "\nElemento nao encontrado  " << endl;
+    }
+    else {
+        cout << "\nElemento encontrado :) \n";
+    }
+   
+    t.remove(3);
+ 
+    t.remove(13);
+
+ 
+    return 0;
+}
