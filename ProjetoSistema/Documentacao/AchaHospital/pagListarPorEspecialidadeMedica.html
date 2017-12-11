@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="Sergillam Oliveira">
+		<link rel="icon" href="assets/imagens/logo.png">
+		<title>ACHA HOSPITAL</title>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		
+		<link href="assets/css/bootstrap.css" rel="stylesheet">
+	</head>
+	<body>		
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+	
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="pagPrincipal.html">Inicio</a></li>
+					<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Listar Hospitais <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="pagListarTodosHospitais.html">Todos Hospitais</a></li>
+						<li><a href="">Por Especialidade Médica</a></li>
+						<li><a href="pagListarPorHorarioFuncionamento.html">Horário de Funcionamento</a></li>
+						</ul>
+					</li>
+					<li><a href="pagAjuda.html">Ajuda</a></li>
+					<li><a href="pagSobre.html">Sobre</a></li>
+				</ul>
+			</div>
+        </nav>
+		<div> 
+			<form>
+			
+			<br><br><br>
+					Informe a especialidade Medica:<input type="text" id="pesquisar" name="pesquisar"
+					value="" placeholder="PESQUISAR"/>
+					<button id="enviar"> Pesquisar</button>
+			</form>	
+			<div> <h2 id="retorno"></h2> </div>	
+
+			
+			<script src="assets/js/script.js" type="text/javascript"> </script>		
+		</div>
+
+	</body>
+</html>

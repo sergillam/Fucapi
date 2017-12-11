@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<title>Página Listar Todos Hospitais</title>
+		<meta charset="UTF-8" />		
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<nav class="menu">
+			<ul>
+				<li><a href="pagPrincipal.html">INÍCIO</a></li>
+				<li><a href="#">LISTAR_HOSPITAIS</a>
+					<ul>
+						<li><a href="pagListarTodosHospitais.html">TODOS_HOSPITAIS</a></li>
+						<li><a href="#">POR_ESPECIALIDADE_MÉDICA</a>
+						<li><a href="#">HORÁRIO_DE_FUNCIONAMENTO</a>
+					</ul>
+				</li>
+				<li><a href="pagAjuda.html">AJUDA</a></li>
+			</ul>
+		</nav>
+	</body>
+	<body>
+			<form name="ListarTodosHospitais" action="consulta.php" method="POST">
+			<!-- <input id="listandoTodosHospitais" type="submit" name="consulta-TODOS-HOSPITAIS" value="Pesquisar">  -->
+			<h2>Listagem de todos os Hospitais: <br></h2>
+			</form>
+	</body>
+	<script type="text/javascript">
+		window.location.assign('consulta.php');
+	</script>
+</html>
