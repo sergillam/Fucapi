@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+     <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Language" content="pt-br">
+        <meta name="viewport" content="width=device-width">
+        <link href="assets/css/bootstrap.css" rel="stylesheet">
+        <link href="assets/css/bootstrap.css" rel="stylesheet">
+        <meta name="author" content="Sergillam Oliveira">
+        <script type="text/javascript"> </script>
+        <script src="assets/js/script.js" type="text/javascript"> </script>
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <title>Cadastro de Cliente</title>
+     </head>
+     <body>
+        <form class="form-horizontal">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Cadastro de Cliente</div>
+                    
+                    <div class="panel-body">
+
+                        <div class="form-group">
+                                <label class="col-md-1 control-label" >Nome </label>  
+                                <div class="col-md-8">
+                                    <input id="name" name="name" onblur="validationName()" placeholder="Informe o nome completo" class="form-control input-md" required="" type="text" minlength="3" maxlength="45">
+                                </div>
+                        </div> 
+                    
+                        <div class="form-group">
+                                <label class="col-md-1 control-label">CPF </label>  
+                                <div class="col-md-2">
+                                    <input id="cpf" name="cpf" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="11" pattern="[0-9]">
+                                </div>
+                                
+                                <label class="col-md-1 control-label" >RG </label>  
+                                <div class="col-md-2">
+                                    <input id="rg" name="rg" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="8" pattern="[0-9]">
+                                </div>
+                                        
+                                <label class="col-md-1 control-label" >PIS </label>  
+                                <div class="col-md-2">
+                                    <input id="pis" name="pis" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="11" pattern="[0-9]">
+                                </div>
+                        </div>
+                <div class="form-group">
+                        <label class="col-md-2 control-label" > Data de Nascimento</label>  
+                        <div class="col-md-2">
+                            <input id="dtnasc" name="dtnasc" placeholder="DD/MM/AAAA" class="form-control input-md" required="" type="text" maxlength="10" OnKeyPress="formatar('##/##/####', this)" onBlur="showhide()">
+                        </div>
+
+                        <label class="col-md-1 control-label" for="radios">Sexo </label>
+                        <div class="col-md-3"> 
+                            <label class="radio-inline" for="radios-0">
+                                <input name="sexo" id="sexo" value="masculino" type="radio">
+                                Masculino
+                            </label>
+                    
+                            <label required="" class="radio-inline" >
+                                <input name="sexo" id="sexo" value="feminino" type="radio" required>
+                                Feminino
+                            </label> 
+                            <label class="radio-inline">
+                                <input name="sexo" id="sexo" value="indefinido" type="radio">
+                                Indefinido
+                            </label>
+                        </div>
+                        </div>
+                    </div>
+                        
+                <div class="form-group">
+                    <label class="col-md-1 control-label">Telefone </label>
+                    <div class="col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+                        <input id="telefone" name="telefone" class="form-control" placeholder="XX XXXXX-XXXX" required="" type="text" maxlength="13" pattern="\[0-9]{2}\ [0-9]{4,6}-[0-9]{3,4}$"
+                        OnKeyPress="formatar('## #####-####', this)">
+                    </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-1 control-label">Email </label>
+                    <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                        <input id="email" name="email" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+                    </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div class="col-md-4">
+                    <button id="cadastrar" name="cadastrar" class="btn btn-success" onclick="validation()" type="Submit">Cadastrar</button>
+                    <button id="cancelar" name="cancelar" class="btn btn-danger" type="Reset">Cancelar</button>
+                    </div>
+                </div>
+                </div>
+        </form>
+     </body>
+ </html>
