@@ -158,9 +158,9 @@ class RSA:
         msgDescriptografada = self.descriptografar(msgCriptografada, chavePrivada, n,msg )
         fimDecrip = timeit.default_timer()
 
-        print("saida: ", msgDescriptografada)
-        print("Crip: %f " %(fimCrip - inicioCrip) )
-        print("Decrip: %f" %(fimDecrip - inicioDecrip) )
+        print(f"Saida: {msgDescriptografada} " )
+        print("Crip: {(fimCrip - inicioCrip):.4f} ")
+        print("Decrip: {(fimDecrip - inicioDecrip):.4f}")
 
 r = RSA()
 
