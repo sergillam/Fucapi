@@ -33,9 +33,9 @@ int main(){
             break;
       }
       
-      cout << "0-sair\n" << "1-Inserir\n" << "2-Pesquisar\n" << "3-Remover\n" << "4-Imprimir todos os elementos\n" 
+      std::cout << "0-sair\n" << "1-Inserir\n" << "2-Pesquisar\n" << "3-Remover\n" << "4-Imprimir todos os elementos\n" 
            << "5-Imprimir os elementos com o codigo informado\n" << "6-Total de elementos na tabela\n";
-      cin >> op; 
+      std::cin >> op; 
         
    }while(op!=0);
     
